@@ -1,35 +1,63 @@
-// grab income-Item
-// grab income-Amount
-// grab income-Date
-// grab income-button
+// An array of objects?
+/*
+  let lineItems = [
+  {type: income, amount: $400, date: 7/29/20}
+  {type: expense, amount: $80, date: 7/29/20}
+  {type: income, amount: $450, date: 7/20/20}
+]
+*/
+
+// Income variables
 const incomeItem = document.querySelector(".income-item");
 const incomeAmount = document.querySelector(".income-amount");
 const incomeDate = document.querySelector(".income-date");
 const incomeBtn = document.querySelector(".income-btn");
 
-
-// grab expense-Item
-// grab expense-Amount
-// grab expense-Date
-// grab expense-button
+// Expense variables
 const expenseItem = document.querySelector(".expense-item");
 const expenseAmount = document.querySelector(".expense-amount");
 const expenseDate = document.querySelector(".expense-date");
 const expenseBtn = document.querySelector(".expense-btn");
+const form = document.querySelector(".form");
 
-// grab Balance
+// Balance
 const balance = document.querySelector(".balance");
+const dollarSign = document.querySelector(".dollar-sign");
 
-// grab table tbody
+// Table tbody
 const tBody = document.querySelector(".table tbody");
 
-// define item category
-// define amount category
-// define date category
 
-// TRY MAKING EXPENSE AND INCOME INTO A CLASS
+// Set current balance to 0
+let currentBalance = 0;
 
-// add each of the inputs to the table
+
+
+
+// Increase (or decrease) current balance on click
+// by adding amount.value to currentBalance
+const increaseBalance = () => {
+currentBalance += parseFloat(incomeAmount.value);
+
+}
+
+const decreaseBalance = () => {
+  currentBalance -= parseFloat(expenseAmount.value);
+}
+
+// Change the innerText of current balance to new current balance
+const displayCurrentBalance = () => {
+  balance.innerText = currentBalance.toFixed(2);
+  if(balance.innerText <= 0) {
+    balance.style.color = "red";
+    dollarSign.style.color = "red";
+  }
+
+  if(balance.innerText >= 1) {
+    balance.style.color = "green";
+    dollarSign.style.color = "green";
+  }
+}
 
 const clearIncomeForm = () => {
   incomeItem.value = "";
@@ -43,57 +71,83 @@ const clearExpenseForm = () => {
   expenseDate.value = "";
 }
 
-const addIncome = () => {
-    // Create tr
-    const incomeLineItem = document.createElement("tr");
-    incomeLineItem.classList.add("table-success");
-    tBody.appendChild(incomeLineItem);
-    // Create th
-    const th = document.createElement("th");
-    th.scope = "row";
-    th.innerText = incomeItem.value;
-    incomeLineItem.appendChild(th);
-    // Create amountTd
-    const amountTd = document.createElement("td");
-    amountTd.innerText = incomeAmount.value;
-    incomeLineItem.appendChild(amountTd);
-    // Create dateTd
-    const dateTd = document.createElement("td");
-    dateTd.innerText = incomeDate.value;
-    incomeLineItem.appendChild(dateTd);
+const pattern = /\$?[\d]+(\.[\d]{0,2})?/
 
-    clearIncomeForm();
+    //const invalidMsg = document.createElement("div");
+    //invalidMsg.classList.add("invalid-feedback");
+    //invalidMsg.innerText = "Please enter a valid number such as: 75.00 or $75.00";
+    //form.appendChild(invalidMsg);
+    //<div class="invalid-feedback">Sorry, that username's taken. Try another?</div>
+
+
+
+
+const addIncome = () => {
+    //validation
+    if(!pattern.test(incomeAmount.value)) {
+      alert("please enter a valid number");
+    } else {
+      // Create tr
+      const incomeLineItem = document.createElement("tr");
+      incomeLineItem.classList.add("table-success");
+      tBody.appendChild(incomeLineItem);
+      // Create th
+      const th = document.createElement("th");
+      th.scope = "row";
+      th.innerText = incomeItem.value;
+      incomeLineItem.appendChild(th);
+      // Create amountTd
+      const amountTd = document.createElement("td");
+      amountTd.innerText = parseFloat(incomeAmount.value).toFixed(2);
+      incomeLineItem.appendChild(amountTd);
+      // Create dateTd
+      const dateTd = document.createElement("td");
+      dateTd.innerText = incomeDate.value;
+      incomeLineItem.appendChild(dateTd);
+      // Add incomeAmount to balance
+      increaseBalance();
+      displayCurrentBalance();
+      clearIncomeForm();
+    }
+
 }
 
 const addExpense = () => {
-  // Create tr
-  const expenseLineItem = document.createElement("tr");
-  expenseLineItem.classList.add("table-danger");
-  tBody.appendChild(expenseLineItem);
-  // Create th
-  const th = document.createElement("th");
-  th.scope = "row";
-  th.innerText = expenseItem.value;
-  expenseLineItem.appendChild(th);
-  // Create amountTd
-  const amountTd = document.createElement("td");
-  amountTd.innerText = expenseAmount.value;
-  expenseLineItem.appendChild(amountTd);
-  // Create dateTd
-  const dateTd = document.createElement("td");
-  dateTd.innerText = expenseDate.value;
-  expenseLineItem.appendChild(dateTd);
-
-  clearExpenseForm();
+  // Validation
+  if(!pattern.test(expenseAmount.value)) {
+    alert("please enter a valid number");
+  } else {
+    // Create tr
+    const expenseLineItem = document.createElement("tr");
+    expenseLineItem.classList.add("table-danger");
+    tBody.appendChild(expenseLineItem);
+    // Create th
+    const th = document.createElement("th");
+    th.scope = "row";
+    th.innerText = expenseItem.value;
+    expenseLineItem.appendChild(th);
+    // Create amountTd
+    const amountTd = document.createElement("td");
+    amountTd.innerText = parseFloat(expenseAmount.value).toFixed(2);
+    expenseLineItem.appendChild(amountTd);
+    // Create dateTd
+    const dateTd = document.createElement("td");
+    dateTd.innerText = expenseDate.value;
+    expenseLineItem.appendChild(dateTd);
+    decreaseBalance();
+    displayCurrentBalance();
+    clearExpenseForm();
+  }
 }
 
 
 incomeBtn.addEventListener("click", addIncome);
 expenseBtn.addEventListener("click", addExpense);
-// for the expense amount, subtract it from balance
-// for the income amount, add it to balance
+displayCurrentBalance();
 
-// For the balance, if the total is negative, make it red, if its positive, make it green
+
+
+
 
 // add a delete function
 // add an edit function

@@ -38,7 +38,7 @@
 </nav>
 
 <div class="global-container">
-  <h1 class="heading text-white balance">Balance: <span>$100</span></h1>
+  <h1 class="heading text-white">Balance: <span class="dollar-sign">$</span><span class="balance"></span></h1>
 
   <table class="table table-hover">
   <thead>
@@ -49,27 +49,17 @@
     </tr>
   </thead>
   <tbody>
-    <tr class="table-success">
-      <th scope="row">Paycheck</th>
-      <td>$400</td>
-      <td>7/26/20</td>
-    </tr>
-    <tr class="table-danger">
-      <th scope="row">Groceries</th>
-      <td>$80</td>
-      <td>7/26/20</td>
-    </tr>
 
   </tbody>
 </table>
 
-<form>
+<form class="form">
   <fieldset>
     <div class="form-group-container">
       <div class="form-group row">
         <input type="text" class="form-control-plaintext text-white user-input income-item" id="staticEmail" placeholder="Item">
         <div class="flex-group">
-          <input type="text" class="form-control-plaintext text-white user-input left-flex income-amount" id="staticEmail" placeholder="Amount">
+          <input type="text" class="form-control-plaintext text-white user-input left-flex income-amount" id="staticEmail" placeholder="Amount" name="income-amount">
           <input type="date" class="form-control-plaintext text-white user-input right-flex income-date" id="staticEmail" placeholder="Date">
         </div>
         <button type="button" class="btn btn-success btn-block income-btn">+ Income</button>
@@ -80,7 +70,7 @@
       <div class="form-group row">
         <input type="text" class="form-control-plaintext text-white user-input expense-item" id="staticEmail" placeholder="Item">
         <div class="flex-group">
-          <input type="text" class="form-control-plaintext text-white user-input left-flex expense-amount" id="staticEmail" placeholder="Amount">
+          <input type="text" class="form-control-plaintext text-white user-input left-flex expense-amount" id="staticEmail" placeholder="Amount" name="expense-amount">
           <input type="date" class="form-control-plaintext text-white user-input right-flex expense-date" id="staticEmail" placeholder="Date">
         </div>
         <button type="button" class="btn btn-danger btn-block expense-btn">- Expense</button>

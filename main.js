@@ -23,7 +23,7 @@ const form = document.querySelector(".form");
 // Balance
 const balance = document.querySelector(".balance");
 const dollarSign = document.querySelector(".dollar-sign");
-
+const btnContainer = document.createElement("tr");
 // Table tbody
 const tBody = document.querySelector(".table tbody");
 
@@ -80,7 +80,18 @@ const pattern = /\$?[\d]+(\.[\d]{0,2})?/
     //<div class="invalid-feedback">Sorry, that username's taken. Try another?</div>
 
 
-
+// Create deleteBtn & editBtn
+btnContainer.classList.add("btn-container");
+// Add deleteBtn
+const deleteBtn = document.createElement("span");
+deleteBtn.classList.add("badge", "badge-pill", "badge-danger")
+deleteBtn.innerText = "X";
+btnContainer.appendChild(deleteBtn);
+// Add editBtn
+const editBtn = document.createElement("span");
+editBtn.classList.add("badge", "badge-pill", "badge-success");
+editBtn.innerText = "Edit";
+btnContainer.appendChild(editBtn);
 
 const addIncome = () => {
     //validation
@@ -89,7 +100,8 @@ const addIncome = () => {
     } else {
       // Create tr
       const incomeLineItem = document.createElement("tr");
-      incomeLineItem.classList.add("table-success");
+      incomeLineItem.classList.add("table-success", "line-item");
+      incomeLineItem.style.cursor = "pointer";
       tBody.appendChild(incomeLineItem);
       // Create th
       const th = document.createElement("th");
@@ -98,12 +110,14 @@ const addIncome = () => {
       incomeLineItem.appendChild(th);
       // Create amountTd
       const amountTd = document.createElement("td");
-      amountTd.innerText = parseFloat(incomeAmount.value).toFixed(2);
+      amountTd.innerText = "$" + parseFloat(incomeAmount.value).toFixed(2);
       incomeLineItem.appendChild(amountTd);
       // Create dateTd
       const dateTd = document.createElement("td");
       dateTd.innerText = incomeDate.value;
       incomeLineItem.appendChild(dateTd);
+      // Add delete & edit btns
+      incomeLineItem.appendChild(btnContainer);
       // Add incomeAmount to balance
       increaseBalance();
       displayCurrentBalance();
@@ -119,7 +133,7 @@ const addExpense = () => {
   } else {
     // Create tr
     const expenseLineItem = document.createElement("tr");
-    expenseLineItem.classList.add("table-danger");
+    expenseLineItem.classList.add("table-danger", "line-item");
     tBody.appendChild(expenseLineItem);
     // Create th
     const th = document.createElement("th");
@@ -128,12 +142,15 @@ const addExpense = () => {
     expenseLineItem.appendChild(th);
     // Create amountTd
     const amountTd = document.createElement("td");
-    amountTd.innerText = parseFloat(expenseAmount.value).toFixed(2);
+    amountTd.innerText = "$" + parseFloat(expenseAmount.value).toFixed(2);
     expenseLineItem.appendChild(amountTd);
     // Create dateTd
     const dateTd = document.createElement("td");
     dateTd.innerText = expenseDate.value;
     expenseLineItem.appendChild(dateTd);
+    // Add delete & edit btns
+    expenseLineItem.appendChild(btnContainer);
+    // Add expenseAmount to balance
     decreaseBalance();
     displayCurrentBalance();
     clearExpenseForm();
@@ -151,3 +168,5 @@ displayCurrentBalance();
 
 // add a delete function
 // add an edit function
+// add localStorage
+// add other pages

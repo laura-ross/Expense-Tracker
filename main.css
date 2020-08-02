@@ -51,4 +51,23 @@ form {
   width: 100%;
   margin-bottom: 0.5rem; }
 
+.red {
+  color: red; }
+
+.green {
+  color: green; }
+
+.delete-btn {
+  cursor: pointer; }
+
+.line-item {
+  position: relative; }
+
+.btn-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: inherit;
+  transform: translateY(50%); }
+
 /*# sourceMappingURL=main.css.map */

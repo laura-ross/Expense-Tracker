@@ -1,15 +1,14 @@
-// When I remove a lineItem, add or subtract the amount from the Balance & update in localStorage - I GOT STUCK DOING THIS AND DONT HAVE THE PATIENCE TO FIGURE OUT HOW TO DO IT - I THINK I"LL HAVE TO CREATE AN INCOME LINE ITEM AND EXPENSE LINE ITEM IN BOTH THE UI AND LOCAL STORAGE BUT I DON"T KNOW HOW TO DISPLAY THEM PROPERLY
-
-
-
-// 1. LineItem class: represents a line item.
-
+// 1. LineItem class: represents a line item. Everytime I create a lineItem it will instantiate a lineItem object
 // 2. UI class: handles UI tasks - i.e dsiaplys lineItems, alerts, removes lineItems
 // 3. Store class: handles Storage using localStorage
 // 4. Events section
   // 4.1. Event: Display LineItems
   // 4.2. Event: Add a LineItem
   // 4.3. Event: Remove a LineItem
+
+//const name = document.querySelector('.item-name').value;
+//const amount = document.querySelector('.item-amount').value;
+//const date = document.querySelector('.item-date').value;
 
 
 var currentBalance = 0;
@@ -24,21 +23,16 @@ var currentBalance = 0;
     }
   }
 
-
   // 2. UI class
   class UI {
 
     // Display LineItems
     static displayLineItems() {
       const lineItems = Store.getLineItems();
-      lineItems.forEach((lineItem) =>
-        UI.addIncomeLineItem(lineItem));
-
-      lineItems.forEach((lineItem) =>
-        UI.addExpenseLineItem(lineItem));
+      lineItems.forEach((lineItem) => UI.addLineItem(lineItem))
     }
 
-    static addIncomeLineItem(lineItem) {
+    static addLineItem(lineItem) {
         const lineItemsList = document.querySelector(".table tbody");
         // Create tr
         const lineItemRow = document.createElement("tr");
@@ -54,23 +48,6 @@ var currentBalance = 0;
         `
         lineItemsList.appendChild(lineItemRow);
       }
-
-      static addExpenseLineItem(lineItem) {
-          const lineItemsList = document.querySelector(".table tbody");
-          // Create tr
-          const lineItemRow = document.createElement("tr");
-          lineItemRow.classList.add("table-danger", "line-item");
-          lineItemRow.innerHTML = `
-            <th>${lineItem.name}</th>
-            <td>$${-Number(lineItem.amount)}</td>
-            <td>${lineItem.date}</td>
-            <td>${lineItem.id}</td>
-            <td class="btn-container">
-              <span class="badge badge-pill badge-danger cursor-pointer delete">X</span>
-            </td>
-          `
-          lineItemsList.appendChild(lineItemRow);
-        }
 
       static deleteLineItem(el) {
         if(el.classList.contains('delete')) {
@@ -104,6 +81,9 @@ var currentBalance = 0;
         const balance = document.querySelector('.balance');
         const dollarSign = document.querySelector(".dollar-sign");
 
+        // Display current balance
+        balance.innerText = currentBalance.toFixed(2);
+
         // Change color of balance & $
         if(balance.innerText <= 0) {
           balance.style.color = "red";
@@ -112,21 +92,25 @@ var currentBalance = 0;
           balance.style.color = "green";
           dollarSign.style.color = "green";
         }
-        // get currentBalance from localStorage
-        // Convert it from string to number?
-         const storedCurrentBalance = Number(localStorage.getItem('currentBalance'));
-         //const storedCurrentBalanceToNum = parseInt(storedCurrentBalance);
-         //console.log(storedCurrentBalanceToNum);
 
-         // Display current balance
-         //balance.innerText = currentBalance.toFixed(2);
-         //balance.innerText = storedCurrentBalance.toFixed(2);
-         balance.innerText = storedCurrentBalance.toFixed(2);
+
+      }
+
+      static increaseBalance() {
+        //const balance = document.querySelector('.balance');
+        const amount = document.querySelector('.item-amount').value;
+        currentBalance = currentBalance + Number(amount)
+        //UI.displayCurrentBalance();
+      }
+
+      static decreaseBalance() {
+        const balance = document.querySelector('.balance');
+        const amount = document.querySelector('.item-amount').value;
+        currentBalance = currentBalance - Number(amount)
+        //UI.displayCurrentBalance();
       }
 
   }
-
-
   // 3. Store class
   class Store {
     static getLineItems() {
@@ -169,10 +153,9 @@ var currentBalance = 0;
     });
 
 
-    // 4.2. Event: Add a LineItem
 
-    // Add an incomeLineItem upon clicking add income button
-    document.querySelector('.income-btn').addEventListener('click', (e) => {
+    // addLineItem function
+    const addLineItem = e => {
       const balance = document.querySelector('.balance');
       const name = document.querySelector('.item-name').value;
       const amount = document.querySelector('.item-amount').value;
@@ -180,80 +163,70 @@ var currentBalance = 0;
       const id = Math.floor(Math.random() * 1000)
 
 
+
       if(name === '' || amount === '' || date === '') {
         UI.showAlert('Please fill in all the fields', 'danger')
       } else {
+
         // Instantiate lineItem
         const lineItem = new LineItem(name, amount, date, id);
-        //const lineItemRow = document.createElement("tr");
-        //lineItemRow.classList.add("table-success");
+
         // Add lineItem to UI
-        UI.addIncomeLineItem(lineItem);
+        UI.addLineItem(lineItem);
+
         // Add lineItem to localStorage
         Store.addLineItem(lineItem);
+
         // Clear fields
         UI.clearFields();
+
         // Show success message
         UI.showAlert('Item successfully added', 'success');
 
         currentBalance = currentBalance + Number(amount);
         balance.innerText = currentBalance.toFixed(2);
-        // Set currentBalance to localStorage
-        localStorage.setItem('currentBalance', currentBalance);
       }
-    });
+    }
 
-    // Add an expenseLineItem upon clicking add expense button
-    document.querySelector('.expense-btn').addEventListener('click', (e) => {
+    const addIncome = () => {
+      addLineItem();
+      //UI.increaseBalance();
       const balance = document.querySelector('.balance');
-      const name = document.querySelector('.item-name').value;
       const amount = document.querySelector('.item-amount').value;
-      const date = document.querySelector('.item-date').value;
-      const id = Math.floor(Math.random() * 1000)
 
-      if(name === '' || amount === '' || date === '') {
-        UI.showAlert('Please fill in all the fields', 'danger')
-      } else {
-        // Instantiate lineItem
-        const lineItem = new LineItem(name, amount, date, id);
-        //const lineItemRow = document.createElement("tr");
-        //lineItemRow.classList.add("table-danger");
-        // Add lineItem to UI
-        UI.addExpenseLineItem(lineItem);
-        // Add lineItem to localStorage
-        Store.addLineItem(lineItem);
-        // Clear fields
-        UI.clearFields();
-        // Show success message
-        UI.showAlert('Item successfully added', 'success');
 
-        currentBalance = currentBalance - Number(amount);
-        balance.innerText = currentBalance.toFixed(2);
-        // Set currentBalance to localStorage
-        localStorage.setItem('currentBalance', currentBalance);
-      }
-    });
+      //currentBalance = currentBalance + Number(amount);
+      //currentBalance++;
+      //balance.innerText = currentBalance.toFixed(2);
+      //UI.displayCurrentBalance();
+      //console.log(amount.value);
+
+    }
+
+    const addExpense = () => {
+      addLineItem()
+      //UI.decreaseBalance();
+      const balance = document.querySelector('.balance');
+      const amount = document.querySelector('.item-amount').value;
+      //currentBalance = currentBalance + Number(amount)
+      //currentBalance--;
+      //balance.innerText = currentBalance.toFixed(2);
+      //UI.displayCurrentBalance();
+      //console.log(balance.innerText);
+    }
+
+    // 4.2. Event: Add a LineItem
+    document.querySelector('.income-btn').addEventListener('click', addIncome);
+    document.querySelector('.expense-btn').addEventListener('click', addExpense);
 
 
     // 4.3. Event: Remove a LineItem
     document.querySelector('.table').addEventListener('click', (e) => {
-      const amount = document.querySelector('.item-amount').value;
       // Remove book from UI
       UI.deleteLineItem(e.target);
       // Remove lineItem from Store
       Store.removeLineItem(e.target.parentElement.previousElementSibling.innerText)
       // Show success message
        UI.showAlert('Item removed', 'success');
-       // set currentBalance to localStorage
-      // How do I differentiate between increasing or decreasing balance?
-      // If classList.includes red background / green background do something?
 
     });
-
-    //// TO DO ////
-    // X - Save currentBalance in localStorage
-    // When I remove a lineItem, add or subtract the amount from the Balance & update in localStorage
-    // Turn the expense lineItems red
-    // Implement my regex pattern in the amount input
-    // Try to make this code more DRY
-    // Make sure my table of contents matches up to the code itself

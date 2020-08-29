@@ -46,6 +46,7 @@
       <th scope="col">Item</th>
       <th scope="col">Amount</th>
       <th scope="col">Date</th>
+      <th scope="col">ID</th>
       <th scope="col"></th>
     </tr>
   </thead>
@@ -58,22 +59,12 @@
   <fieldset>
     <div class="form-group-container">
       <div class="form-group row">
-        <input type="text" class="form-control-plaintext text-white user-input income-item" id="staticEmail" placeholder="Item">
+        <input type="text" class="form-control-plaintext text-white user-input item-name" id="staticEmail" placeholder="Item">
         <div class="flex-group">
-          <input type="text" class="form-control-plaintext text-white user-input left-flex income-amount" id="staticEmail" placeholder="Amount" name="income-amount">
-          <input type="date" class="form-control-plaintext text-white user-input right-flex income-date" id="staticEmail" placeholder="Date">
+          <input type="text" class="form-control-plaintext text-white user-input left-flex item-amount" id="staticEmail" placeholder="Amount" name="item-amount">
+          <input type="date" class="form-control-plaintext text-white user-input right-flex item-date" id="staticEmail" placeholder="Date">
         </div>
         <button type="button" class="btn btn-success btn-block income-btn">+ Income</button>
-      </div>
-    </div>
-
-    <div class="form-group-container">
-      <div class="form-group row">
-        <input type="text" class="form-control-plaintext text-white user-input expense-item" id="staticEmail" placeholder="Item">
-        <div class="flex-group">
-          <input type="text" class="form-control-plaintext text-white user-input left-flex expense-amount" id="staticEmail" placeholder="Amount" name="expense-amount">
-          <input type="date" class="form-control-plaintext text-white user-input right-flex expense-date" id="staticEmail" placeholder="Date">
-        </div>
         <button type="button" class="btn btn-danger btn-block expense-btn">- Expense</button>
       </div>
     </div>
